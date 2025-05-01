@@ -2,6 +2,7 @@ package com.myprojects.restapi2.controller;
 
 
 import com.myprojects.restapi2.dto.AccountDto;
+import com.myprojects.restapi2.dto.TransferMoneyDto;
 import com.myprojects.restapi2.mapper.AccountMapper;
 import com.myprojects.restapi2.model.Account;
 import com.myprojects.restapi2.service.AccountService;
@@ -69,6 +70,15 @@ public class AccountController {
         return  ResponseEntity.ok("Account Deleted");
 
 
+    }
+
+    @PutMapping("/transfer")
+    public ResponseEntity<String> transfer(@RequestBody TransferMoneyDto transferMoneyDto){
+
+        accountService.transfer(transferMoneyDto.getFromAccountId(),transferMoneyDto.getToAccountId(), transferMoneyDto.getBalance());
+
+
+        return ResponseEntity.ok("Transfer Success") ;
     }
 
 

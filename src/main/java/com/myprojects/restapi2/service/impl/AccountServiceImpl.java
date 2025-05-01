@@ -89,4 +89,24 @@ public class AccountServiceImpl  implements AccountService {
 
 
     }
+
+    @Override
+    public void transfer(Long fromAccountId, Long toAccountId, double amount) {
+      Account senderAccount = accountRepository.findById(fromAccountId).orElseThrow(
+              ()-> new RuntimeException("Sender Account not found")
+      );
+      Account receiverAccount =  accountRepository.findById(toAccountId).orElseThrow(
+                () -> new RuntimeException("Receiver Account not found")
+        );
+        if (senderAccount.getBalance() < amount) {
+            throw new RuntimeException("Insufficient funds");
+        }
+      double senderAmount =senderAccount.getBalance()-amount;
+      double receiverAmount =receiverAccount.getBalance()+amount;
+      senderAccount.setBalance(senderAmount);
+      receiverAccount.setBalance(receiverAmount);
+      accountRepository.save(senderAccount);
+      accountRepository.save(receiverAccount);
+
+    }
 }
